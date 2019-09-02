@@ -26,7 +26,7 @@
 	var dateNow = new GlideDateTime();
 	var tableName = "incident";
 	var categoryArray = ["Software","Hardware","Network","Database"];
-	var subcategoryArray = ["grCategories.label"];
+	var subcategoryArray = [];
 	var callerArray = [grUsers.name];
 	var selectCategory = "";
 	var selectSubCategory = "";
@@ -44,25 +44,34 @@
 			genIRec.newRecord();
 			
 			//Select a random value from the Category array and set the Category field value (choice)
-			selectCatgeory = categoryArray[(Math.floor(Math.random() * 4))];
+			selectCategory = categoryArray[(Math.floor(Math.random() * 4))];
 			genIRec.setValue("category",selectCategory);
 			
+			//Set grSubCategories to only valid values based on Category field
+			grSubCategories.addQuery('inactive', false);
+			grSubCategories.addQuery('dependant_value', selectCategory);
+			grSubCategories.query();
+			while (grSubCategories.next()){
+				subcategoryArray.push(grSubCategories.label);
+				gs.info("TestArray" + subcategoryArray);
+			}
+			
 			//log all values
-			gs.info("Debug - " + genIRec.number + selectCategory);
+			gs.info("Debug - " + genIRec.number + ',' + selectCategory + ',' + selectSubCategory);
 			
 		}]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2019-08-30 07:27:30</sys_created_on>
         <sys_id>9a13a606dbe33300e689e1bb4b9619bb</sys_id>
-        <sys_mod_count>10</sys_mod_count>
+        <sys_mod_count>26</sys_mod_count>
         <sys_name>Generate Random Incident Records (V2)</sys_name>
         <sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package>
         <sys_policy/>
         <sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope>
         <sys_update_name>sysauto_script_9a13a606dbe33300e689e1bb4b9619bb</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2019-08-30 07:43:07</sys_updated_on>
+        <sys_updated_on>2019-09-02 00:00:01</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>
